@@ -1,26 +1,24 @@
-#include "raylib/raylib.h"
+#include "engine/system/engine.h"
+
+#include "engine/utils/logger.h"
+
+#include "game/player.h"
+
+UniquePtr<Logger> Logger::m_Instance {};
 
 int main()
 {
-    constexpr int kWidth {500};
-    constexpr int kHeight {500};
+    Logger::GetInstance()->SetLogLevel(LogLevel::Debug);
+
+    UniquePtr<Scene> game {new Scene {"Game"}};
+
+    UniquePtr<GameObject> player {new Player {"Player"}};
     
-    InitWindow(kWidth, kHeight, "MazeGame");
+    game->AddGameObject(player);
+    
+    Engine engine {};
 
-    constexpr int kTargetFps {60};
+    engine.LoadScene(std::move(game));
 
-    while (!WindowShouldClose())
-    {
-        BeginDrawing();
-        
-        ClearBackground(RAYWHITE);
-        
-        constexpr int kFont {40};
-        
-        DrawText("Hello window!", 0, 0, kFont, LIGHTGRAY);
-        
-        EndDrawing();
-    }
-
-    CloseWindow();
+    engine.Start();
 }

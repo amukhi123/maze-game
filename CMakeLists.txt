@@ -8,8 +8,17 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(${PROJECT_NAME})
 
-target_sources(${PROJECT_NAME} PRIVATE src/main.cpp)
+file(GLOB_RECURSE SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
-target_include_directories(${PROJECT_NAME} PUBLIC lib)
+target_sources(${PROJECT_NAME} PRIVATE ${SRC_FILES})
 
-target_link_libraries(${PROJECT_NAME} PUBLIC C:/Users/Aqil/Documents/GitHub/maze-game/lib/raylib/raylibdll.lib)
+set(EXTERNAL_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/lib")
+set(INTERNAL_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include")
+
+target_include_directories(
+  ${PROJECT_NAME} PUBLIC 
+  ${EXTERNAL_HEADERS}
+  ${INTERNAL_HEADERS}
+)
+
+target_link_libraries(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/lib/raylib/raylibdll.lib")
