@@ -1,15 +1,12 @@
 #include "engine/game_object.h"
 
 #include "engine/types.h"
-#include "engine/utils/logger.h"
+#include "engine/util/logger.h"
 
-#include "engine/components/transform.h"
+#include "engine/component/transform.h"
 
-GameObject::GameObject(const String Name) : BaseObject {Name}
+GameObject::GameObject(const String& Name) : BaseObject {Name}, m_TransformComponent {std::make_unique<TransformComponent>("Transform")}
 {
-    UniquePtr<Component> transform {new TransformComponent {"Transform"}};
-    
-    AddComponent(std::move(transform));
 }
 
 void GameObject::AddComponent(UniquePtr<Component>&& ComponentToAdd)
@@ -27,9 +24,14 @@ void GameObject::AddComponent(UniquePtr<Component>&& ComponentToAdd)
     LOG_D("Added " + componentName + " to " + GetName() + ".")
 }
 
-Component* GameObject::GetComponent(const ComponentType Type)
+Component* GameObject::GetComponent(const ComponentType Type) const
 {
-    for (UniquePtr<Component>& component : m_Components)
+    if (Type == ComponentType::Transform)
+    {
+        return m_TransformComponent.get();
+    }
+    
+    for (const UniquePtr<Component>& component : m_Components)
     {
         if (component->GetType() == Type)
         {

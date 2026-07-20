@@ -8,12 +8,15 @@ EXIT_FAILURE = 1
 BUILD_DIRECTORY = "build"
 
 def usage():
-    print("Usage: python build.py <argument>")
+    print("Usage: python build.py <command> <argument(s)>")
     print("\t1. clean: Cleans and removes build directory")
     print("\t2. gen: Geneates build files")
+    print("\t\t2.1 msvc: Geneates MSVC files")
     print("\t3. build: Builds using the generated build files")
     print("\t4. run: Runs the executable")
-    print("\t5. all: Runs all commands above")
+    print("\t5. ninja: Cleans, gens and runs the executable built by Ninja")
+    print("\t6. open: Opens the MSVC sln")
+    print("\t7. msvc: Cleans, gens and opens the MSVC sln")
     
 def clean():
     if directory_exists(BUILD_DIRECTORY):
@@ -25,15 +28,24 @@ def clean():
             sys.exit(EXIT_FAILURE)
 
 def gen():
-    execute_command("cmake -G Ninja -B build")
+    if "msvc" in sys.argv:
+        execute_command('cmake -G "Visual Studio 18 2026" -B build')
+    else:
+        execute_command("cmake -G Ninja -B build")
+        
+    if directory_exists(BUILD_DIRECTORY):
+        copy_file("lib/raylib/raylib.dll", "build/")
         
 def build():
     execute_command("cmake --build build")
 
 def run():
     if directory_exists(BUILD_DIRECTORY):
-        copy_file("lib/raylib/raylib.dll", "build/")
         execute_command(".\\build\\MazeGame.exe")
+
+def open():
+    if directory_exists(BUILD_DIRECTORY):
+        os.startfile("build\\MazeGame.slnx")
 
 def execute_command(cmd):
     try:
@@ -74,11 +86,17 @@ def main():
         build()
     elif "run" in sys.argv:
         run()
-    elif "all" in sys.argv:
+    elif "ninja" in sys.argv:
         clean()
         gen()
         build()
         run()
+    elif "open" in sys.argv:
+        open()
+    elif "msvc" in sys.argv:
+        clean()
+        gen()
+        open()
     else:
         print("Unknown command.")
         usage()

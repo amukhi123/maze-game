@@ -13,7 +13,7 @@ public:
     
     void Shutdown();
 
-    void LoadScene(UniquePtr<Scene>&& SceneToLoad);
+    void LoadScene(UniquePtr<Scene> SceneToLoad);
 private:
     UniquePtr<Scene> m_ActiveScene;
 

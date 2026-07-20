@@ -18,7 +18,7 @@ public:
         return m_Name;
     };
 
-    void AddGameObject(UniquePtr<GameObject>& GameObjectToAdd)
+    void AddGameObject(UniquePtr<GameObject>&& GameObjectToAdd)
     {
         m_GameObjects.emplace_back(std::move(GameObjectToAdd));
     }

@@ -10,6 +10,8 @@ void Renderer::Start(const uint32 WindowWidth, const uint32 WindowHeight)
 void Renderer::BeginDraw() const
 {
     BeginDrawing();
+    
+    ClearBackground(RAYWHITE);
 }
 
 void Renderer::EndDraw() const

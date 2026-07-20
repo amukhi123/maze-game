@@ -5,7 +5,11 @@
 class Player final : public GameObject
 {
 public:
-    Player(const String& Name);
+    explicit Player(const String& Name);
     
     void Update() override;
+private:
+    float m_MovementSpeed;
+    
+    void Move() const;
 };

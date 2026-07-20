@@ -1,8 +1,15 @@
+#include "raylib/raylib.h"
+
 #include "engine/system/engine.h"
 
-#include "engine/utils/logger.h"
+#include "engine/util/logger.h"
+
+#include "engine/types.h"
 
 #include "game/player.h"
+#include "game/map.h"
+
+#include "engine/component/camera.h"
 
 UniquePtr<Logger> Logger::m_Instance {};
 
@@ -10,11 +17,20 @@ int main()
 {
     Logger::GetInstance()->SetLogLevel(LogLevel::Debug);
 
-    UniquePtr<Scene> game {new Scene {"Game"}};
+    auto game {std::make_unique<Scene>("Game")};
 
-    UniquePtr<GameObject> player {new Player {"Player"}};
+    UniquePtr<GameObject> player {std::make_unique<Player>("Player")};
+    UniquePtr<GameObject> map {std::make_unique<Map>("Map")};
+
+    const Vector3 cameraPosition {0.0f, 10.0f, 100.0f};
+    const Vector3 cameraTarget {0.0f, 0.0f, 00.0f};
     
-    game->AddGameObject(player);
+    UniquePtr<Component> camera {std::make_unique<CameraComponent>("Camera", cameraPosition, cameraTarget)};
+
+    player->AddComponent(std::move(camera));
+    
+    game->AddGameObject(std::move(player));
+    game->AddGameObject(std::move(map));
     
     Engine engine {};
 

@@ -1,4 +1,4 @@
-#include "engine/components/component.h"
+#include "engine/component/component.h"
 
 String Component::TypeToStr(const ComponentType Type)
 {
