@@ -22,9 +22,7 @@ public:
     
     explicit operator Vector3() const 
     {
-        const Vector3 vector3 {m_X, m_Y, m_Z};
-        
-        return vector3;
+        return {m_X, m_Y, m_Z};
     }
     
     T GetX() const
@@ -32,14 +30,29 @@ public:
         return m_X;
     }
     
+    void SetX(const T X)
+    {
+        m_X = X;
+    }
+    
     T GetY() const
     {
         return m_Y;
     }
     
+    void SetY(const T Y)
+    {
+        m_Y = Y;
+    }
+    
     T GetZ() const
     {
         return m_Z;
+    }
+    
+    void SetZ(const T Z)
+    {
+        m_Z = Z;
     }
     
     String ToString() const

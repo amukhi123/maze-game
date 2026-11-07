@@ -30,22 +30,22 @@ void Player::Move() const
     
     if (IsKeyDown(KEY_W))
     {
-        movementVector = {0.0f, 0.0f, -adjustedMovementSpeed};
+        movementVector.SetZ(-adjustedMovementSpeed);
     }
     
     if (IsKeyDown(KEY_A))
     {
-        movementVector = {-adjustedMovementSpeed, 0.0f, 0.0f};
+        movementVector.SetX(-adjustedMovementSpeed);
     }
     
     if (IsKeyDown(KEY_S))
     {
-        movementVector = {0.0f, 0.0f, adjustedMovementSpeed};
+        movementVector.SetZ(adjustedMovementSpeed);
     }
     
     if (IsKeyDown(KEY_D))
     {
-        movementVector = {adjustedMovementSpeed, 0.0f, 0.0f};
+        movementVector.SetX(adjustedMovementSpeed);
     }
     
     m_TransformComponent->SetPosition(m_TransformComponent->GetPosition() + movementVector);
